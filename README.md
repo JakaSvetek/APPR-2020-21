@@ -5,10 +5,11 @@ Repozitorij z gradivi pri predmetu APPR v študijskem letu 2020/21
 * [![Shiny](http://mybinder.org/badge.svg)](http://mybinder.org/v2/gh/JakaSvetek/APPR-2020-21/master?urlpath=shiny/APPR-2020-21/projekt.Rmd) Shiny
 * [![RStudio](http://mybinder.org/badge.svg)](http://mybinder.org/v2/gh/JakaSvetek/APPR-2020-21/master?urlpath=rstudio) RStudio
 
-## Tematika
+## Analiza najboljših svetovnih delfinistov
 
-Izbrali si boste temo, s katero se bo vaš projekt ukvarjal.
-Tukaj boste napisali, kje ste dobili podatke, ter kakšen je vaš cilj.
+Ker sem tudi sam dolga leta treniral plavanje in je bil moj najboljši stil delfin, sem se odločil, da bom za projekt pri predmetu Analiza podatkov s programom R analiziral najboljših 200 odplavanih časov pri disciplinah 50, 100 in 200 metrov delfin (v dolgih bazenih). Ker bom gledal najboljših 200 časov in ne plavalcev, se bodo plavalci tu ponavljali in s tem bom lahko videl, kdo je že koliko časa na svetovni sceni.
+
+Analiziral bom plavalce glede na državo, iz katere prihajajo, njihovo starostjo, ko so odplavali ta čas, kraj, kjer so ga odplavali ter kategorijo tekme, na kateri so takrat nastopili. Videl bom tudi, če so morda kakšni plavalci uspošni na 50, 100 in celi 200 metrskih razdaljah, kar pomeni, da so šprinterji in dolgoprogaši hkrati. Videli bomo tudi če je res Michael Phelps 'Greatest of all time' ali si ta vzdevek morda zasluži danes že kdo drug.
 
 ## Program
 
