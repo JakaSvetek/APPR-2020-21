@@ -4,43 +4,26 @@ library(dplyr)
 library(tidyr)
 library(readr)
 
-stolpci <- c("Name", "Country", "Birth_date", "Time", "Points", "Swim_date", "Meet_name", "Meet_city", "Meet_country")
+
+razdalje <- c("50"="%OS", "100"="%OS", "200"="%M:%OS") # oblike časov pri posameznih razdaljah
+bazeni <- c("SCM", "LCM")
 
 
+podatki <- lapply(names(razdalje), function(razdalja)
+  lapply(bazeni, function(bazen)
+    sprintf("podatki/%sm_%s.csv", razdalja, bazen) %>%
+      read_csv(na="-", locale=locale(encoding="UTF-8", date_format="%d/%m/%Y"),
+               col_types=cols(swim_time=col_time(format=razdalje[razdalja]))) %>%
+      mutate(Distance=parse_factor(razdalja, levels=names(razdalje), ordered=TRUE), # razdalja bo urejen faktor
+             Pool=parse_factor(bazen, levels=bazeni))) %>%
+    bind_rows()) %>% bind_rows() %>%
+  transmute(Name=full_name_computed, Country=team_short_name, Birth_date=birth_date,
+            Distance, Pool, Time=swim_time, Points=fina_points, Swim_date=swim_date,
+            Meet_name=meet_name, Meet_city=meet_city, Meet_country=country_code)
 
-SCM50 <- read.csv("podatki/50m_SCM.csv", encoding = "UTF-8") %>%
-  select(1, 2, 3, 6, 7, 9, 14, 15, 16) %>%
-  .[c(5, 4, 6, 2, 7, 3, 1, 8, 9)]
-colnames(SCM50) <- stolpci
+plavalci <- podatki %>% select(Name, Country, Birth_date) %>% unique()
 
+dogodki <- podatki %>% drop_na(Meet_name) %>%
+  select(Meet_name, Meet_city, Meet_country) %>% unique()
 
-SCM100 <- read.csv("podatki/100m_SCM.csv", encoding = "UTF-8") %>%
-  select(1, 2, 3, 6, 7, 9, 14, 15, 16) %>%
-  .[c(5, 4, 6, 2, 7, 3, 1, 8, 9)]
-colnames(SCM100) <- stolpci
-
-
-SCM200 <- read.csv("podatki/200m_SCM.csv", encoding = "UTF-8") %>%
-  select(1, 2, 3, 6, 7, 9, 14, 15, 16) %>%
-  .[c(5, 4, 6, 2, 7, 3, 1, 8, 9)]
-colnames(SCM200) <- stolpci
-
-
-LCM50 <- read.csv("podatki/50m_LCM.csv", encoding = "UTF-8") %>%
-  select(1, 2, 3, 6, 7, 9, 14, 15, 16) %>%
-  .[c(5, 4, 6, 2, 7, 3, 1, 8, 9)]
-colnames(LCM50) <- stolpci
-
-
-LCM100 <- read.csv("podatki/100m_LCM.csv", encoding = "UTF-8") %>%
-  select(1, 2, 3, 6, 7, 9, 14, 15, 16) %>%
-  .[c(5, 4, 6, 2, 7, 3, 1, 8, 9)]
-colnames(LCM100) <- stolpci
-
-
-LCM200 <- read.csv("podatki/200m_LCM.csv", encoding = "UTF-8") %>%
-  select(1, 2, 3, 6, 7, 9, 14, 15, 16) %>%
-  .[c(5, 4, 6, 2, 7, 3, 1, 8, 9)]
-colnames(LCM200) <- stolpci
-
-
+podatki <- podatki %>% select(-Country, -Birth_date, -Meet_city, -Meet_country)
