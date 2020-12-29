@@ -1,11 +1,13 @@
 library(knitr)
 library(rvest)
 library(gsubfn)
-library(tidyr)
 library(tmap)
 library(shiny)
+library(ggplot2)
+library(data.table)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(lubridate)
 
 options(gsubfn.engine="R")
-
-# Uvozimo funkcije za pobiranje in uvoz zemljevida.
-source("lib/uvozi.zemljevid.r", encoding="UTF-8")

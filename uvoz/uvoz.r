@@ -1,9 +1,5 @@
 # UVOZ PODATKOV
 
-library(dplyr)
-library(tidyr)
-library(readr)
-
 
 razdalje <- c("50"="%OS", "100"="%OS", "200"="%M:%OS") # oblike časov pri posameznih razdaljah
 bazeni <- c("SCM", "LCM")
