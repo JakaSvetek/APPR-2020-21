@@ -10,7 +10,8 @@ Graf_napredek <- function(razdalja, bazen){
     geom_line() + ylab("Swim Time") + xlab("Date")
 }
 
-# Funkcija za prikaz napredka plavalca
+
+# Funkcija za prikaz napredka plavalca pri neki disciplini
 
 Graf_plavalca <- function(razdalja, bazen, ime){
   ggplot(podatki %>% filter(Distance == razdalja, Pool == bazen, Name == ime) %>%
@@ -36,6 +37,7 @@ Graf_LCM_vs_SCM <- function(razdalja){
     labs(x = "Date",
          y = "Time[sec]")
 }
+
 
 # Osebni rekordi plavalca
 
@@ -92,8 +94,7 @@ tekme_na_mesto <- ggplot(as.data.frame(table(dogodki %>%
   coord_flip()
 
 
-
-# Najboljše reprezentance
+# Najštevilčnejše reprezentance
 
 stevila_plavalcev_iz_posamicnih_drzav <- ggplot(as.data.frame(table(plavalci %>% 
                                                                       group_by(Country) %>% 
@@ -104,7 +105,6 @@ stevila_plavalcev_iz_posamicnih_drzav <- ggplot(as.data.frame(table(plavalci %>%
   labs(x = "Country", y = "Number of top 200 swimmers") +
   coord_flip()
   
-  
-# stevia_rezultatov_posamicnih_drzav <- 
+
 
           
