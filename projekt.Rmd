@@ -1,6 +1,6 @@
 ---
 title: "Poročilo pri predmetu Analiza podatkov s programom R"
-author: "Študent FMF"
+author: "Jaka Svetek"
 output:
   html_document: default
   pdf_document:
@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
 
 # Uvoz vseh potrebnih knjižnic
 source("lib/libraries.r", encoding="UTF-8")
+source("lib/uvozi.zemljevid.r", encoding="UTF-8")
 ```
 
 ```{r rstudio, results='asis'}
@@ -24,9 +25,10 @@ source("lib/rstudio.r", encoding="UTF-8")
 
 # Izbira teme
 
-Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
+Za temo sem si izbral analizo najboljših svetovnih delfinistov. Analizial bom najboljših 200 odplavanih časov pri vsaki disciplini pri obeh dolžinah bazena (50 in 25 metrov).
 
-![](slike/grb.png)
+<center>
+![](slike/MichaelPhelps.jpg)
 
 ***
 
@@ -36,33 +38,27 @@ Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
 source("uvoz/uvoz.r", encoding="UTF-8")
 ```
 
-Uvozili smo podatke o občinah v obliki CSV s statističnega urada ter v obliki HTML
-z Wikipedije. Podatke imamo v dveh razpredelnicah v obliki *tidy data*.
+Podatke sem uvozil iz spletne strani svetovne plavalne organizacije FINA. Podatke sem prečistil in vseh 6 tabel združil v eno samo tabelo, ki sem jo nato razdelil na tri manjše tabele, tako da se podatki niso ponavljali in sem jih nato uporabljal pri nadaljni analizi.
 
-1. `druzine` - podatki o družinah za vsako občino
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `velikost.druzine` - spremenljivka: število otrok v družini (število: 1, 2, 3 ali 4, kjer zadnja vrednost pomeni 4 ali več),
-  - `stevilo.druzin` - meritev: število družin z ustreznim številom otrok v ustrezni občini (število).
+1. [podatki](http://www.fina.org/fina-rankings/filter/overall-rankings) - podatki o najbolših 200 odplavanih časih (iz tu sem vzel 6 tabel - vsaka dollžina delfina kratkem (SCM) in dolgem (LCM) bazenu).
+  - `Name` - spremenljivka: ime plavalca (neurejen faktor),
+  - `Distance` - spremenljivka: razdalja discipline (število),
+  - `Pool` - spremenljivka: vrsta bazena (neurejen faktor),
+  - `Time` - meritev: koliko časa je plaval (število),
+  - `Points` - meritev: koliko koliko točk je bil takrat vreden ta čas (število),
+  - `Swim_date` - meritev: datum, ko je je ta oseba odplavala to (število),
+  - `Meet_Name` - meritev: ime tekme, na kateri je to odplaval (neurejen faktor),
 
-2. `obcine` - podatki o občinah
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `povrsina` - meritev: površina občine v km$^2$ (število),
-  - `prebivalci` - meritev: prebivalstvo občine (število),
-  - `gostota` - meritev: število prebivalcev na km$^2$ (število),
-  - `naselja` - meritev: število naselij v občini (število),
-  - `ustanovitev` - meritev: leto ustanovitve občine (število),
-  - `pokrajina` - meritev: pokrajina, ki ji občina pripada (neurejen faktor),
-  - `regija` - meritev: regija, ki ji občina pripada (neurejen faktor),
-  - `odcepitev` - meritev: podatki o občinah, od katerih se je občina odcepila (besedilo).
+2. [plavalci](http://www.fina.org/fina-rankings/filter/overall-rankings) - tu so podatki o vseh plavalcih, da se ne ponavljajo.
+  - `Name` - spremenljivka: ime plavalca (neurejen faktor),
+  - `Country` - meritev: država, ki jo plavalec zastopa (neurejen faktor),
+  - `Birth_date` - meritev: datum rojstva plavalca (število),
+  
+3. [dogodki](http://www.fina.org/fina-rankings/filter/overall-rankings) - tu so podatki o tekmovanjih, na katerih je  bilo odplavanih prvih 200 časov v vsaki disciplini delfina.
+  - `Meet_name` - spremenljivka: ime tekmovanja (neurejen faktor),
+  - `Meet_city` - meritev: mesto, v katerem je tekmovanje potekalo (neurejen faktor),
+  - `Meet_Country` - meritev: država, v kateri je tekmovanje potekalo (neurejen faktor),
 
-**Opomba**: da bi razpredelnica `obcine` res bila v obliki *tidy data*, bi morali odstraniti stolpec `gostota` (saj je izpeljan iz stolpcev `povrsina` in `prebivalci`), podatke o pokrajinah pa bi morali premakniti v drugo razpredelnico, saj nekatere občine pripadajo dvema pokrajinama. Podobno bi morali narediti tudi s stolpcem `odcepitev`.
-
-Spodnji graf prikazuje porazdelitev števila naselij v občinah.
-
-```{r histogram, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
-ggplot(obcine, aes(x=naselja)) + geom_histogram() +
-  ggtitle("Pogostost števila naselij") + xlab("Število naselij") + ylab("Število občin")
-```
 
 ***
 
@@ -72,33 +68,27 @@ ggplot(obcine, aes(x=naselja)) + geom_histogram() +
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 ```
 
-Spodnji zemljevid prikazuje povprečno velikost družine za vsako občino.
-
-```{r zemljevid, fig.align='center', fig.cap='Zemljevid povprečnega števila otrok v družini'}
-tm_shape(merge(zemljevid, povprecja, by.x="OB_UIME", by.y="obcina")) +
-  tm_polygons("povprecje", title="Povprečje") +
-  tm_layout(title="Povprečno število otrok v družini")
+```{r graf123, figures-side, echo=FALSE, fig.show="hold", out.width="33%"}
+Graf_LCM_vs_SCM("50")
+Graf_LCM_vs_SCM("100")
+Graf_LCM_vs_SCM("200")
 ```
+V zgornjih treh grafih sem naredil primerjavo med plavanjem v dolgem (LCM - 50 metrskem) bazenu in kratkem (SCM - 25 metrskem) bazenu. Obstaja tudi 25 jardski bazen a take imajo le v Ameriki in v njih ne potekajo nisi svetovna prvenstva niti olimpijske igre, zato analize le teh nisem delal. Na grafu je le najboljši rezultat vsakega meseca, da niso rezultati pregosti, saj plavalci npr. na isti tekmi odplavali več časov, ki so še dans med najboljšimi 200. Iz grafov je vido, da je plavanje v kratkih bazenih nekoliko hitrejše, to pa je zaradi obratov in odrivov, ki so hitrejši kot samo plavanje. Opazimo tudi velik skok napredka tik pred letom 2010. To je sato, ker so bile takrat dovoljene tako imenovane "visokotehnološke kopalke", ki pa so jih nato prepovedali, saj so preveč pomagale plavalcem. Opazimo lahko tudi, da graf vedno bolj gost, to pa pomeni, da plavanje napreduje saj so trenutni plavalci hitrejši od preteklih in je najboljših 200 časov več po letu 2015.
+
+```{r zemljevid1, echo=FALSE, fig.align='center'}
+zemljevid_tekem
+```
+Zgrodnji zemljevid nam prikazuje število tekem iz posamične države, kjer so bili odplavani analizirani rezultati. Države z več tekmami vlagajo več v plavanje, kar bomo videli tudi na naslednjem zemljevidu o plavalcih. Opazimo lahko tudi, da nekatere države sploh ne gostijo tekem, kjer bi se odplavali vrhunski rezultati a imajo vseeno vrhunske plavalce (npr. Slovenija ima dva taka plavalca a ni gostila nobene tekme). To pa je zato, ker plavalci prilagodijo plan dela tako, da so v najboljši formi le za velike tekme.
+
+```{r zemljevid2, echo=FALSE, fig.align='center'}
+zemljevid_stevilo_delfinistov
+```
+Zgornji zemljevid pa nam prikazuje, iz katerih držav so plavalci, ki trenutno držijo najboljših 200 časov. Vidimo lahko, da je tu spet Amerika "velesila", ki pa ji takoj sledita še Japonska in Rusija. Zanimivo je omeniti tudi, da je glede na število prebivalcev Slovenija najboljša, saj ima kar dva taka plavalca.
 
 ***
 
 # Napredna analiza podatkov
 
-```{r analiza}
-source("analiza/analiza.r", encoding="UTF-8")
-```
-
-Spodnji graf prikazuje povezavo med številom naselij in površino občine.
-
-```{r graf, fig.align='center', fig.cap='Povezava med številom naselij in površino občine'}
-ggplot(inner_join(obcine, data.frame(obcina=names(skupine),
-                                     skupina=factor(skupine)), by="obcina")
-, aes(x=povrsina, y=naselja, color=skupina, size=prebivalci/1000)) + geom_point() +
-  ggtitle("Število naselij glede na površino občine") +
-  xlab(expression("Površina (km"^2 * ")")) + ylab("Št. naselij") +
-  guides(color=guide_legend(title="Skupina"),
-         size=guide_legend(title="Prebivalci (* 1000)"))
-```
 
 ***
 

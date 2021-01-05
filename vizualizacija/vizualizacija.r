@@ -7,7 +7,7 @@ Graf_napredka <- function(razdalja, bazen){
            mutate(zaokrozeni_datumi=Swim_date-day(Swim_date)+1) %>%
            group_by(zaokrozeni_datumi) %>% summarise(Time=min(Time)),
          aes(x=zaokrozeni_datumi, y=Time)) +
-    geom_line() + ylab("Swim Time") + xlab("Date")
+    geom_line() + ylab("Čas plavanja") + xlab("Datum")
 }
 
 
@@ -35,13 +35,15 @@ Graf_LCM_vs_SCM <- function(razdalja){
     group_by(zaokrozeni_datumi) %>% summarise(Time=min(Time)) %>%
     mutate(Pool="LCM")
   
+  ime_grafa <- paste("Primerjava dolgih in kratkih bazenov pri", as.character(razdalja), "metrov delfin")
+  
   LCM_vs_SCM <- rbind(SCM_podatki, LCM_podatki)
   
   ggplot(LCM_vs_SCM) +
     geom_line() +
     aes(x = zaokrozeni_datumi, y = Time, col = Pool) +
-    ylab("Time") + xlab("Date")
-}  
+    ylab("Čas plavanja [sekunde]") + xlab("Datum") + labs(title = ime_grafa)
+} 
 
 
 # Osebni rekordi plavalca
@@ -63,7 +65,6 @@ Najboljse_tekme <- function(dolzina, bazen){
          aes(x=reorder(Var1, Freq), y=Freq)) + 
     geom_bar(stat = "identity", fill="steelblue") +
     coord_flip() +
-    geom_text(aes(label=Freq)) +
     labs(x = "Meet name", y = "Number of top 200 results")
 }
 
@@ -152,4 +153,15 @@ zemljevid_stevilo_delfinistov <- ggplot() +
         axis.ticks=element_blank(), panel.background = element_blank()) + 
   scale_fill_gradient(low = '#FCDADA', high='#970303', limits=c(1,20)) +
   labs(fill="Število delfinistov")
+
+# Starost rekorderjev
+
+t <- ((right_join(podatki, plavalci, by="Name")) %>% 
+        filter(Points>=1000)) %>% 
+  select(Name, Swim_date, Birth_date)
+
+graf_starosti_rekorderjev <- ggplot(as.data.frame(table(floor((t$Swim_date - t$Birth_date)/365.25))),
+                                    aes(x=Var1, y=Freq)) +
+  geom_bar(stat = "identity", fill = "steelblue")
+
 
