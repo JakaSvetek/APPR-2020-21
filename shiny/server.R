@@ -1,24 +1,13 @@
-library(shiny)
-
-shinyServer(function(input, output) {
-  output$druzine <- DT::renderDataTable({
-    druzine %>% pivot_wider(names_from="velikost.druzine", values_from="stevilo.druzin") %>%
-      rename(`Občina`=obcina)
-  })
-  
-  output$pokrajine <- renderUI(
-    selectInput("pokrajina", label="Izberi pokrajino",
-                choices=c("Vse", levels(obcine$pokrajina)))
-  )
-  output$naselja <- renderPlot({
-    main <- "Pogostost števila naselij"
-    if (!is.null(input$pokrajina) && input$pokrajina %in% levels(obcine$pokrajina)) {
-      t <- obcine %>% filter(pokrajina == input$pokrajina)
-      main <- paste(main, "v regiji", input$pokrajina)
-    } else {
-      t <- obcine
-    }
-    ggplot(t, aes(x=naselja)) + geom_histogram() +
-      ggtitle(main) + xlab("Število naselij") + ylab("Število občin")
+shinyServer(function(input, output){
+  output$graf_tekem <- renderPlot({
+    print(ggplot(as.data.frame(table((podatki %>% 
+                                        filter(Distance == input$dolzina, Pool == input$bazen)) %>%
+                                       group_by(Meet_name)%>% 
+                                       summarise(Meet_name))), 
+                 aes(x=reorder(Var1, Freq), y=Freq)) + 
+            geom_bar(stat = "identity", fill="steelblue") +
+            coord_flip() +
+            labs(x = "Ime tekme", y = "Število najboljših 200 časov"))
   })
 })
+

@@ -162,6 +162,8 @@ t <- ((right_join(podatki, plavalci, by="Name")) %>%
 
 graf_starosti_rekorderjev <- ggplot(as.data.frame(table(floor((t$Swim_date - t$Birth_date)/365.25))),
                                     aes(x=Var1, y=Freq)) +
-  geom_bar(stat = "identity", fill = "steelblue")
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(x = "Starost", y = "Število plavalcev") +
+  labs(title = "Graf starosti plavalcev ko so odplavali svetovni rekord")
 
 

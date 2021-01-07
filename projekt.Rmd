@@ -85,13 +85,19 @@ zemljevid_stevilo_delfinistov
 ```
 Zgornji zemljevid pa nam prikazuje, iz katerih držav so plavalci, ki trenutno držijo najboljših 200 časov. Vidimo lahko, da je tu spet Amerika "velesila", ki pa ji takoj sledita še Japonska in Rusija. Zanimivo je omeniti tudi, da je glede na število prebivalcev Slovenija najboljša, saj ima kar dva taka plavalca.
 
+```{r graf4, echo=FALSE, fig.align='center'}
+graf_starosti_rekorderjev
+```
+ta graf prikazuje starost vseh plavalcev, ki so odplavali več oziroma enako 1000 FINA točk aktualnega leta. FINA točke se vsako leto znova naravnajo tako, da je na začetku vsakega leta 1000 točk pri neki disciplini točno svetovni rekord v tisti disciplini, slabči ko je rezultat mnaj je točk in boljši ko je rezultat, več je točk. Ker sem tu vzel je plavalce z vsaj 1000 točkami, to pomeni, da so s tistim časom postavili svetovni rekord. Iz grafa vidimo, da so je moški plavalec v najboljši življenski formi v srednjih dvajsetih letih.
+
+
 ***
 
 # Napredna analiza podatkov
 
-
-***
-
-```{r shiny}
+```{r shiny, echo=FALSE}
 shinyAppDir("shiny", options=list(width="100%", height=600))
 ```
+
+
+***
