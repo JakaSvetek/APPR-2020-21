@@ -1,7 +1,8 @@
 shinyUI(
   fluidPage(
     theme = shinytheme("yeti"),
-    navbarPage("NASLOV NASLOV NASLOV",
+    navbarPage("Tekme in plavalci",
+               
                tabPanel("Analiza tekem",
                         titlePanel(title = h2("Analiza najboljših tekme za posamične discipline")),
                         sidebarLayout(
@@ -18,8 +19,25 @@ shinyUI(
                             )
                           ),
                           mainPanel(
-                            plotOutput(outputId = "graf_tekem")
+                            plotOutput(outputId = "graf_tekem",
+                                       height = 800)
                           )
-                        )))
+                        )),
+
+               tabPanel("Napredek plavalca",
+                        titlePanel(title = h2("Število točk plavalca skozi čas")),
+                        sidebarLayout(
+                          sidebarPanel(
+                            selectInput(
+                              inputId = "ime",
+                              label = "Ime",
+                              choices = (as.data.frame(table(podatki$Name)) %>% filter(Freq > 2))$Var1
+                            )
+                          ),
+                          mainPanel(
+                            plotOutput(outputId = "graf_tock_plavalca")
+                          )
+                        ))
+               )
   )
 )

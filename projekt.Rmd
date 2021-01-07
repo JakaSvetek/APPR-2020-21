@@ -73,22 +73,22 @@ Graf_LCM_vs_SCM("50")
 Graf_LCM_vs_SCM("100")
 Graf_LCM_vs_SCM("200")
 ```
-V zgornjih treh grafih sem naredil primerjavo med plavanjem v dolgem (LCM - 50 metrskem) bazenu in kratkem (SCM - 25 metrskem) bazenu. Obstaja tudi 25 jardski bazen a take imajo le v Ameriki in v njih ne potekajo nisi svetovna prvenstva niti olimpijske igre, zato analize le teh nisem delal. Na grafu je le najboljši rezultat vsakega meseca, da niso rezultati pregosti, saj plavalci npr. na isti tekmi odplavali več časov, ki so še dans med najboljšimi 200. Iz grafov je vido, da je plavanje v kratkih bazenih nekoliko hitrejše, to pa je zaradi obratov in odrivov, ki so hitrejši kot samo plavanje. Opazimo tudi velik skok napredka tik pred letom 2010. To je sato, ker so bile takrat dovoljene tako imenovane "visokotehnološke kopalke", ki pa so jih nato prepovedali, saj so preveč pomagale plavalcem. Opazimo lahko tudi, da graf vedno bolj gost, to pa pomeni, da plavanje napreduje saj so trenutni plavalci hitrejši od preteklih in je najboljših 200 časov več po letu 2015.
+V zgornjih treh grafih sem naredil primerjavo med plavanjem v dolgem (LCM - 50 metrskem) bazenu in kratkem (SCM - 25 metrskem) bazenu. Obstaja tudi 25 jardski bazen a take imajo le v Ameriki in v njih ne potekajo niti svetovna prvenstva niti olimpijske igre, zato analize le teh nisem delal, saj gostijo bolj nepomembne tekme (npr. univerzitetna tekmovanja). Na grafu je le najboljši rezultat vsakega meseca, da niso rezultati pregosti, saj so plavalci npr. na isti tekmi odplavali več časov, ki so še danes med najboljšimi 200. Iz grafov je vidno, da je plavanje v kratkih bazenih nekoliko hitrejše, to pa je zaradi obratov in odrivov, ki so hitrejši kot samo plavanje. Opazimo tudi velik skok napredka tik pred letom 2010. To je zato, ker so bile takrat dovoljene tako imenovane "visokotehnološke kopalke", ki pa so jih nato prepovedali, saj so preveč pomagale plavalcem. Opazimo lahko tudi, da graf vedno bolj gost, to pa pomeni, da plavanje napreduje saj so trenutni plavalci hitrejši od preteklih in je najboljših 200 časov več po letu 2015.
 
 ```{r zemljevid1, echo=FALSE, fig.align='center'}
 zemljevid_tekem
 ```
-Zgrodnji zemljevid nam prikazuje število tekem iz posamične države, kjer so bili odplavani analizirani rezultati. Države z več tekmami vlagajo več v plavanje, kar bomo videli tudi na naslednjem zemljevidu o plavalcih. Opazimo lahko tudi, da nekatere države sploh ne gostijo tekem, kjer bi se odplavali vrhunski rezultati a imajo vseeno vrhunske plavalce (npr. Slovenija ima dva taka plavalca a ni gostila nobene tekme). To pa je zato, ker plavalci prilagodijo plan dela tako, da so v najboljši formi le za velike tekme.
+Zgornji zemljevid nam prikazuje število tekem iz posamične države, kjer so bili odplavani analizirani rezultati. Države z več tekmami vlagajo več v plavanje, kar bomo videli tudi na naslednjem zemljevidu o plavalcih. Opazimo lahko tudi, da nekatere države sploh ne gostijo tekem, kjer bi se odplavali vrhunski rezultati a imajo vseeno vrhunske plavalce (npr. Slovenija ima dva taka plavalca a ni gostila nobene tekme). To pa je zato, ker plavalci prilagodijo plan dela tako, da so v najboljši formi le za velike tekme.
 
 ```{r zemljevid2, echo=FALSE, fig.align='center'}
 zemljevid_stevilo_delfinistov
 ```
-Zgornji zemljevid pa nam prikazuje, iz katerih držav so plavalci, ki trenutno držijo najboljših 200 časov. Vidimo lahko, da je tu spet Amerika "velesila", ki pa ji takoj sledita še Japonska in Rusija. Zanimivo je omeniti tudi, da je glede na število prebivalcev Slovenija najboljša, saj ima kar dva taka plavalca.
+Zgornji zemljevid pa nam prikazuje iz katerih držav so plavalci, ki trenutno držijo najboljših 200 časov. Vidimo lahko, da je tu spet Amerika "velesila", ki pa ji takoj sledita še Japonska in Rusija. Zanimivo je omeniti tudi, da je glede na število prebivalcev Slovenija najboljša, saj ima kar dva taka plavalca.
 
 ```{r graf4, echo=FALSE, fig.align='center'}
 graf_starosti_rekorderjev
 ```
-ta graf prikazuje starost vseh plavalcev, ki so odplavali več oziroma enako 1000 FINA točk aktualnega leta. FINA točke se vsako leto znova naravnajo tako, da je na začetku vsakega leta 1000 točk pri neki disciplini točno svetovni rekord v tisti disciplini, slabči ko je rezultat mnaj je točk in boljši ko je rezultat, več je točk. Ker sem tu vzel je plavalce z vsaj 1000 točkami, to pomeni, da so s tistim časom postavili svetovni rekord. Iz grafa vidimo, da so je moški plavalec v najboljši življenski formi v srednjih dvajsetih letih.
+ta graf prikazuje starost vseh plavalcev, ki so odplavali več oziroma enako 1000 FINA točk takratnega leta. FINA točke se vsako leto znova naravnajo tako, da je na začetku vsakega leta 1000 točk pri neki disciplini točno svetovni rekord v tisti disciplini. Nato pa se vsak nadalji rezulat prihodnjega leta ovrednoti glede na to. Slabši ko je rezultat manj je točk in boljši ko je rezultat, več je točk. Ker sem tu vzel je plavalce z vsaj 1000 točkami, to pomeni, da so s tistim časom postavili svetovni rekord. Iz grafa vidimo, da je moški plavalec v najboljši življenski formi v srednjih dvajsetih letih.
 
 
 ***
@@ -98,6 +98,10 @@ ta graf prikazuje starost vseh plavalcev, ki so odplavali več oziroma enako 100
 ```{r shiny, echo=FALSE}
 shinyAppDir("shiny", options=list(width="100%", height=600))
 ```
+Pri prvi simulaciji vidimo, na kateri tekmi je bilo odplavano koliko časov pri posamezni disciplini, ki so še danes med najboljšimi 100timi. Tako lahko vidimo na kateri tekmi so bili plavalci bolj "šprintersko" oziroma "dolgoprogaško" razpoloženi. Ker velja, da se kratke discipline plava bolje v malo toplejši, dolge pa malo hladnejši vodi, lahko glede na to simulacijo tudi ocenimo okvirno temperaturo vode na določeni tekmi.
+
+Druga simulacija pa nam prikazuje točke določenega plavalca skozi njegovo kariero. V vsakem mesecu nam prikazuje le najboljše (najvišje) točke, saj bi bilo drugače podatkov preveč, saj tekme potekajo v vsaj dveh delih - predtekmovanja in finale -  in bi bilo za isto tekmo nesmiselno prikazovati oba rezultata.
+
 
 
 ***

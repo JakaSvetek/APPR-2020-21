@@ -15,7 +15,8 @@ podatki <- lapply(names(razdalje), function(razdalja)
     bind_rows()) %>% bind_rows() %>%
   transmute(Name=full_name_computed, Country=team_short_name, Birth_date=birth_date,
             Distance, Pool, Time=swim_time, Points=fina_points, Swim_date=swim_date,
-            Meet_name=meet_name, Meet_city=meet_city, Meet_country=country_code)
+            Meet_name=meet_name, Meet_city=meet_city, Meet_country=country_code) %>%
+  drop_na()
 
 plavalci <- podatki %>% select(Name, Country, Birth_date) %>% unique()
 
